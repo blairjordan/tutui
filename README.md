@@ -5,20 +5,9 @@ reports measurements; tutui graphs those measurements as they arrive, checks
 thresholds, and saves the run for later replay. Scenarios can be written in
 Rust or in any language that can write JSON Lines to stdout.
 
-```
- RUNNING  checkout ramp  scenario checkout  phase c=50  elapsed 00:04:12  PASS  ceiling c=25
-┌ metrics ───────────────────┐┌ latency_ms  request latency ────────────────────────────┐
-│ ⧗ latency_ms               ││ 2.1s │                                    ⡠⠤⠤⠤ p99      │
-│   n=4,812 p50 180ms p95 1.4s││      │                              ⡠⠔⠉               │
-│ Σ requests                 ││      │                    ⢀⠤⠤⠤⠤⠤⠤⠤⠔⠁     ⣀⣀⣀⣀ p95      │
-│   4,812 total  21.3/s      ││      │⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀ p50      │
-│ ≈ in_flight                ││      └───────────────────────────────────────────────────│
-│   50                       │├ breakdown ───────────────────────────────────────────────┤
-│                            ││ status=200  4,790   status=503  22                       │
-├ log ─────────────────────────────────────────────────────────────────────────────────────┤
-│  252s  phase: c=50                                                                       │
-└──────────────────────────────────────────────────────────────────────────────────────────┘
-```
+![tutui running the example ramp: latency percentiles climbing as concurrency passes the backend's capacity, header showing FAIL and ceiling c=50](docs/screenshot.png)
+
+*The bundled example ramp at the moment `c=100` saturates a backend capped at 60 req/s. p50/p95/p99 fan apart, the header flips to FAIL and names the last passing stage as the ceiling.*
 
 ## Why
 
