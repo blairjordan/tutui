@@ -1,6 +1,6 @@
 {
-  "name": "example",
-  "description": "Synthetic traffic from docs/example-scenario.mjs: a steady phase, then a degraded one. Any command speaking docs/PROTOCOL.md can be run this way.",
+  "name": "example ramp",
+  "description": "Synthetic ramp from docs/example-scenario.mjs: concurrency 10 \u2192 25 \u2192 50 \u2192 100 against a backend that saturates at 60/s. Watch latency climb and the queue stop draining; the header names the ceiling.",
   "scenario": "process",
   "params": {
     "command": [
@@ -8,15 +8,22 @@
       "../docs/example-scenario.mjs"
     ],
     "params": {
-      "seconds": 20,
-      "rate": 30
+      "stages": [
+        10,
+        25,
+        50,
+        100
+      ],
+      "stage_seconds": 20,
+      "capacity": 60
     }
   },
+  "chart_window_seconds": 90,
   "thresholds": [
     {
       "metric": "latency_ms",
       "stat": "p95",
-      "max": 200
+      "max": 250
     },
     {
       "metric": "requests",
@@ -24,7 +31,12 @@
       "labels": {
         "status": "200"
       },
-      "min": 0.95
+      "min": 0.99
+    },
+    {
+      "metric": "queue_depth",
+      "stat": "slope",
+      "max": 0.5
     }
   ]
 }
