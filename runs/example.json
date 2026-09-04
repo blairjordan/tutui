@@ -1,0 +1,30 @@
+{
+  "name": "example",
+  "description": "Synthetic traffic from docs/example-scenario.mjs: a steady phase, then a degraded one. Any command speaking docs/PROTOCOL.md can be run this way.",
+  "scenario": "process",
+  "params": {
+    "command": [
+      "node",
+      "../docs/example-scenario.mjs"
+    ],
+    "params": {
+      "seconds": 20,
+      "rate": 30
+    }
+  },
+  "thresholds": [
+    {
+      "metric": "latency_ms",
+      "stat": "p95",
+      "max": 200
+    },
+    {
+      "metric": "requests",
+      "stat": "share",
+      "labels": {
+        "status": "200"
+      },
+      "min": 0.95
+    }
+  ]
+}
